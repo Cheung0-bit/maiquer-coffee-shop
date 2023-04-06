@@ -1,0 +1,116 @@
+spring:
+  profiles:
+    active: prod
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  servlet:
+    multipart:
+      max-request-size: 20MB
+      max-file-size: 20MB
+
+metric:
+  # Document 配 置 信 息
+  swagger:
+    # 文 档 标 题
+    title: 麦趣测评后台中心
+    # 是 否 开 启
+    enable: true
+    # 分 组 名 称
+    group-name: 核心业务
+    # 描 述 信 息
+    description: 接口API测试文档，有问题及时反馈
+    # 扫 包 路 径
+    scan-package: tech.maiquer.api
+    # 版 本 信 息
+    version: V2.0.0
+    # 联 系 人 信 息
+    contact-name: 张林&杜宇豪
+    # 联 系 人 链 接
+    contact-url: https://wpa.qq.com/msgrd?v=3&uin=1725525653&site=qq&menu=yes
+    # 联 系 人 邮 箱
+    contact-email: cheung0-bit@qq.com
+  # 权 限 配 置
+  security:
+    # 开 启 超 级 管 理 员 账 号 -- 不需要验证权限
+    super-auth-open: true
+    # 超 级 管 理 员 账 号 -- 不需要验证权限
+    super-admin: zhanglin
+    # 不 需 要 权 限 拦 截 的 接 口 配 置
+    open-api:
+      - /MP_verify_YDPBxhGwLwqjNroP.txt # 微信端握手
+      - /smsCode.html # 验证码测试页面
+      - /admin/** # Pear Admin 公用资源
+      - /component/** # Pear Admin 公用资源
+      - /config/**  # Pear Admin 公用资源
+      - /myimgs/**  # Pear Admin 公用资源
+      - /swagger**/**  # Swagger 资源
+      - /webjars/** # Swagger 资源
+      - /v3/** # Swagger 资源
+      - /doc.html # 接口文档
+      - /images/** # 图片
+      - /druid/** # 数据库连接池
+      - /api/wx-pay/notify # 微信支付回调
+      - /api/wechat/** # 微信业务
+      - /callback/** # 微信回调
+      - /api/upload/** # 上传图片
+      - /api/evaluation/queryAll/** # 测评查询
+      - /api/evaluation/queryByPage/{page}/{size} # 测评分页查询
+      - /api/sms/smsCodeSend # 手机验证码发送
+      - /api/sms/login/** # 手机验证码登录
+      - /system/captcha/** # 图片验证码
+    back-resource:
+      - /index.html # 后台主页
+      - /view/** # 后台视图层
+      - /user/** # 后台用户管理
+  jwt:
+    # 密匙KEY
+    secret: JWTSecret
+    # HeaderKEY
+    tokenHeader: Authorization
+    # Token前缀字符
+    tokenPrefix: metric-
+    # 过期时间 单位秒 1天后过期=86400 7天后过期=604800
+    expiration: 604800
+  sms:
+    # AccessKeyId
+    access-key-id: AccessKeyId
+    # AccessKeySecret
+    access-key-secret: AccessKeySecret
+    # endpoint
+    domain: dysmsapi.aliyuncs.com
+    # 短信签名
+    sign-name: 麦趣测评
+    # 验证码模板
+    template-code: 验证码模板
+    # 通知模板
+    template-notify: test
+  wechat-code:
+    # 应用ID
+    app-id: 应用ID
+    # 应用私钥
+    app-secret: 应用私钥
+    # 重定向
+    redirect-url: 重定向
+  wechat-pay:
+    # 商户号
+    mch-id: 商户号
+    # API证书序列号
+    mch-serial-no: API证书序列号
+    # 商户私钥文件
+    # private-key-path: E:\代码相关\项目\maiqu_work\apiclient_key.pem
+    private-key-path: private-key-path
+    # APIv3 密钥
+    api-v3-key: APIv3
+    # APPID
+    appid: APPID
+    # 微信服务器地址
+    domain: 微信服务器地址
+    # 接受结果通知地址
+    notify-domain: 接受结果通知地址
+
+# Mybatis 配 置
+mybatis:
+  # 配 置 扫 描
+  mapper-locations: classpath*:**/xml/**.xml
+  type-aliases-package: tech.maiquer

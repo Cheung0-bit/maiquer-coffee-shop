@@ -1,0 +1,33 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:mysql://hostname:3306/metric_hall?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2b8
+    username: username
+    password: password
+    driver‐class‐name: com.mysql.cj.jdbc.Driver
+  redis:
+    host: hostname
+    port: 6379
+    username: username
+    password: password
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  thymeleaf:
+    suffix: .html
+    prefix: classpath:/templates/
+    encoding: UTF-8
+    mode: HTML
+    cache: false
+  web:
+    resources:
+      static-locations: classpath:/static,classpath:/templates/,classpath:/public,classpath:/resources,classpath:/META-INF/resources
+  data:
+    mongodb:
+      host: hostname
+      port: 27017
+      username: username
+      password: password
+      authentication-database: database

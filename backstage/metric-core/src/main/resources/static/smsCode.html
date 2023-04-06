@@ -1,0 +1,76 @@
+<!--
+ * @Description: sms-code-test
+ * @Author: cheung0
+ * @Date: 2022-03-21 15:51:04
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sms-code</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.bootcss.com/qs/6.7.0/qs.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <input type="text" v-model="phone" placeholder="请输入手机号">
+        <input type="button" value="点击发送验证码" @click="sendSmsCode"><br>
+        <input type="text" v-model="code">
+        <input type="button" value="登录" @click="doLogin"><br>
+    </div>
+
+    <script>
+        var http = axios.create({
+            baseURL: 'https://api.maiquer.tech',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+        });
+        var app = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    phone: '',
+                    code: ''
+                }
+            },
+            methods: {
+                sendSmsCode() {
+                    http.post("/api/sms/smsCodeSend?phone=" + this.phone, {
+                        
+                        })
+                        .then(function (response) {
+                            console.log(response);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                },
+                doLogin() {
+                    http.post("/api/sms/login?phone=" + this.phone + "&code=" + this.code, {
+                           
+                        })
+                        .then(function (response) {
+                            console.log(response);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                }
+
+            }
+
+
+        })
+    </script>
+
+
+</body>
+
+</html>

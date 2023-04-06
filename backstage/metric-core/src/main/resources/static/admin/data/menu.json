@@ -1,0 +1,216 @@
+[
+  {
+    "id": 1,
+    "title": "工作空间",
+    "icon": "layui-icon layui-icon-console",
+    "type": 0,
+    "href": "",
+    "children": [
+      {
+        "id": 10,
+        "title": "控制后台",
+        "icon": "layui-icon layui-icon-console",
+        "type": 1,
+        "openType": "_iframe",
+        "href": "view/console/console1.html"
+      },
+      {
+        "id": 14,
+        "title": "搜索引擎",
+        "icon": "layui-icon layui-icon-console",
+        "type": 1,
+        "openType": "_iframe",
+        "href": "https://www.bing.com"
+      },
+      {
+        "id": "bilibili",
+        "title": "摸鱼必备",
+        "icon": "layui-icon layui-icon-console",
+        "type": 1,
+        "openType": "_iframe",
+        "href": "https://www.bilibili.com/"
+      }
+    ]
+  },
+  {
+    "id": "swagger",
+    "title": "接口文档",
+    "icon": "layui-icon layui-icon-console",
+    "type": 0,
+    "href": "",
+    "children": [
+      {
+        "id": "swagger-ui",
+        "title": "swagger-ui",
+        "icon": "layui-icon layui-icon-console",
+        "type": 1,
+        "openType": "_iframe",
+        "href": "/swagger-ui/index.html"
+      },
+      {
+        "id": "bootstrap-ui",
+        "title": "bootstrap-ui",
+        "icon": "layui-icon layui-icon-console",
+        "type": 1,
+        "openType": "_iframe",
+        "href": "/doc.html"
+      }
+    ]
+  },
+  {
+    "id": "system",
+    "title": "系统管理",
+    "icon": "layui-icon layui-icon-set-fill",
+    "type": 0,
+    "href": "",
+    "children": [
+      {
+        "id": 601,
+        "title": "用户管理",
+        "icon": "layui-icon layui-icon-face-smile",
+        "type": 1,
+        "openType": "_iframe",
+        "href": "view/system/user.html"
+      },
+      {
+        "id": 602,
+        "title": "角色管理",
+        "icon": "layui-icon layui-icon-face-cry",
+        "type": 1,
+        "openType": "_iframe",
+        "href": "view/system/role.html"
+      },
+      {
+        "id": 603,
+        "title": "权限管理",
+        "icon": "layui-icon layui-icon-face-cry",
+        "type": 1,
+        "openType": "_iframe",
+        "href": "view/system/power.html"
+      },
+      {
+        "id": 604,
+        "title": "测评管理",
+        "icon": "layui-icon layui-icon-face-cry",
+        "type": 1,
+        "openType": "_iframe",
+        "href": "view/system/evaluation.html"
+      },
+      {
+        "id": 605,
+        "title": "商品管理",
+        "icon": "layui-icon layui-icon-face-cry",
+        "type": 1,
+        "openType": "_iframe",
+        "href": "view/system/product.html"
+      },
+      {
+        "id": 606,
+        "title": "支付管理",
+        "icon": "layui-icon layui-icon-face-cry",
+        "type": 1,
+        "openType": "_iframe",
+        "href": "view/system/payment.html"
+      },
+      {
+        "id": 607,
+        "title": "订单管理",
+        "icon": "layui-icon layui-icon-face-cry",
+        "type": 1,
+        "openType": "_iframe",
+        "href": "view/system/order.html"
+      },
+      {
+        "id": 608,
+        "title": "行为日志",
+        "icon": "layui-icon layui-icon-face-cry",
+        "type": 1,
+        "openType": "_iframe",
+        "href": "view/system/log.html"
+      },
+      {
+        "id": 609,
+        "title": "数据字典",
+        "icon": "layui-icon layui-icon-face-cry",
+        "type": 1,
+        "openType": "_iframe",
+        "href": "view/system/dict.html"
+      }
+    ]
+  },
+  {
+    "id": "result",
+    "title": "结果页面",
+    "icon": "layui-icon layui-icon-auz",
+    "type": 0,
+    "href": "",
+    "children": [
+      {
+        "id": "success",
+        "title": "成功",
+        "icon": "layui-icon layui-icon-face-smile",
+        "type": 1,
+        "openType": "_iframe",
+        "href": "view/result/success.html"
+      },
+      {
+        "id": "failure",
+        "title": "失败",
+        "icon": "layui-icon layui-icon-face-cry",
+        "type": 1,
+        "openType": "_iframe",
+        "href": "view/result/error.html"
+      }
+    ]
+  },
+  {
+    "id": "error",
+    "title": "错误页面",
+    "icon": "layui-icon layui-icon-face-cry",
+    "type": 0,
+    "href": "",
+    "children": [
+      {
+        "id": 403,
+        "title": "403",
+        "icon": "layui-icon layui-icon-face-smile",
+        "type": 1,
+        "openType": "_iframe",
+        "href": "view/error/403.html"
+      },
+      {
+        "id": 404,
+        "title": "404",
+        "icon": "layui-icon layui-icon-face-cry",
+        "type": 1,
+        "openType": "_iframe",
+        "href": "view/error/404.html"
+      },
+      {
+        "id": 500,
+        "title": "500",
+        "icon": "layui-icon layui-icon-face-cry",
+        "type": 1,
+        "openType": "_iframe",
+        "href": "view/error/500.html"
+      }
+    ]
+  },
+  {
+    "id": "code",
+    "title": "开发工具",
+    "icon": "layui-icon layui-icon-util",
+    "type": 0,
+    "href": "",
+    "children": [
+      {
+        "id": 801,
+        "title": "表单构建",
+        "icon": "layui-icon layui-icon-util",
+        "type": 1,
+        "openType": "_iframe",
+        "href": "component/code/index.html"
+      }
+    ]
+  }
+]

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- 依 赖 项 目 -->
+    <parent>
+        <groupId>tech.maiquer</groupId>
+        <artifactId>metric-server</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <!-- 基 本 信 息 -->
+    <artifactId>metric-oss</artifactId>
+    <name>对象储存模块</name>
+    <description>metric-oss</description>
+
+    <!-- 依 赖 管 理 -->
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- 又 拍 云 SDK -->
+        <dependency>
+            <groupId>com.upyun</groupId>
+            <artifactId>java-sdk</artifactId>
+        </dependency>
+
+    </dependencies>
+
+</project>

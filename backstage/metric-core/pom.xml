@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- 依 赖 项 目 -->
+    <parent>
+        <groupId>tech.maiquer</groupId>
+        <artifactId>metric-server</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <!-- 基 本 信 息 -->
+    <artifactId>metric-core</artifactId>
+    <name>核心业务模块</name>
+    <description>metric-core</description>
+
+    <properties>
+        <!--docker镜像的前缀-->
+        <docker.image.prefix>maiqu</docker.image.prefix>
+    </properties>
+
+    <!-- 依 赖 管 理 -->
+    <dependencies>
+
+        <!-- 数 据 库 连 接 工 具 -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>tech.maiquer</groupId>
+            <artifactId>metric-common</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>tech.maiquer</groupId>
+            <artifactId>metric-oss</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>tech.maiquer</groupId>
+            <artifactId>metric-sms</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>tech.maiquer</groupId>
+            <artifactId>metric-wechat</artifactId>
+        </dependency>
+
+    </dependencies>
+
+    <!-- 构建工具 -->
+    <build>
+        <!-- Maven 构 建 插 件 -->
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <!--IDEA的Docker集成插件-->
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <configuration>
+                    <!--远程Docker地址-->
+                    <dockerHost>https://124.222.85.137:2376</dockerHost>
+                    <!--CA证书地址-->
+                    <dockerCertPath>D:\ca</dockerCertPath>
+                    <!--镜像名称，前缀/项目名-->
+                    <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+                    <!--Dockerfile的位置-->
+                    <dockerDirectory>src/main/resources/docker</dockerDirectory>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

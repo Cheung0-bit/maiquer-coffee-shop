@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.maiquer.system.mapper.OrderInfoMapper">
+
+    <resultMap type="OrderInfo" id="OrderInfoMap">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="orderNo" column="order_no" jdbcType="VARCHAR"/>
+        <result property="userId" column="user_id" jdbcType="BIGINT"/>
+        <result property="productId" column="product_id" jdbcType="INTEGER"/>
+        <result property="totalFee" column="total_fee" jdbcType="INTEGER"/>
+        <result property="codeUrl" column="code_url" jdbcType="VARCHAR"/>
+        <result property="orderStatus" column="order_status" jdbcType="VARCHAR"/>
+        <result property="prepayId" column="prepay_id" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into t_order_info(title, order_no, user_id, product_id, total_fee, code_url, order_status, prepay_id)
+        values (#{title}, #{orderNo}, #{userId}, #{productId}, #{totalFee}, #{codeUrl}, #{orderStatus}, #{prepayId})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update t_order_info
+        set title        = #{title},
+            order_no     = #{orderNo},
+            user_id      = #{userId},
+            product_id   = #{productId},
+            total_fee    = #{totalFee},
+            code_url     = #{codeUrl},
+            order_status = #{orderStatus},
+            prepay_id    = #{prepayId}
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from t_order_info
+        where id = #{id}
+    </delete>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="OrderInfoMap">
+        select *
+        from t_order_info
+        where id = #{id}
+        limit 1
+    </select>
+
+    <!--订单号查询-->
+    <select id="queryByOrderNoOrderInfo" resultMap="OrderInfoMap">
+        select *
+        from t_order_info
+        where order_no = #{orderNo}
+        limit 1
+    </select>
+
+    <!-- 个人购买何况查询 -->
+    <select id="queryByUserId" resultMap="OrderInfoMap">
+        select distinct title, order_no, product_id, total_fee, order_status, create_time, update_time
+        from t_order_info
+        where user_id = #{userId}
+    </select>
+
+    <!-- 查询所有 -->
+    <select id="queryAll" resultMap="OrderInfoMap">
+        select *
+        from t_order_info
+    </select>
+
+    <select id="queryAll1" resultMap="OrderInfoMap" resultType="tech.maiquer.common.model.LayuiQuery5">
+        select * from t_order_info
+    </select>
+
+    <select id="getOrderInfoList" parameterType="tech.maiquer.common.model.LayuiQuery5" resultMap="OrderInfoMap">
+        select * from t_order_info
+        where order_no like #{orderNo}
+        limit #{start},#{limit}
+    </select>
+
+
+    <select id="countOrderInfoList" parameterType="tech.maiquer.common.model.LayuiQuery5" resultType="Long">
+        select count(1) from t_order_info
+        where order_no like #{orderNo}
+    </select>
+
+
+</mapper>
+

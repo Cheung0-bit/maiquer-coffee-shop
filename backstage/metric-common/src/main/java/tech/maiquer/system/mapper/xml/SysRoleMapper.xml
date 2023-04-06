@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.maiquer.system.mapper.SysRoleMapper">
+
+    <resultMap type="SysRole" id="SysRoleMap">
+        <id property="roleId" column="role_id" jdbcType="INTEGER"/>
+        <result property="roleName" column="role_name" jdbcType="VARCHAR"/>
+        <result property="description" column="description" jdbcType="VARCHAR"/>
+        <result property="enable" column="enable" jdbcType="TINYINT"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <collection property="powerList" ofType="SysPower" fetchType="lazy">
+            <id column="power_id" property="powerId"/>
+            <result column="power_name" property="powerName"/>
+            <result column="power_code" property="powerCode"/>
+            <result column="power_enable" property="enable"/>
+        </collection>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="SysRoleMap">
+        select *
+        from sys_role sr
+                 left join sys_role_power srp on sr.role_id = srp.role_id
+                 left join sys_power sp on srp.power_id = sp.power_id
+        where sr.role_id = #{roleId}
+          and sr.enable = 1
+        limit 1
+    </select>
+
+    <!--角色名称查询-->
+    <select id="queryByRoleName" resultMap="SysRoleMap">
+        select *
+        from sys_role sr
+                 left join sys_role_power srp on sr.role_id = srp.role_id
+                 left join sys_power sp on srp.power_id = sp.power_id
+        where sr.role_name = #{roleName}
+          and sr.enable = 1
+        limit 1
+    </select>
+
+    <!-- 查询所有 -->
+    <select id="queryAll" resultMap="SysRoleMap">
+        select *
+        from sys_role
+        where concat(ifnull(role_name, ''), ifnull(description, '')) like
+              concat('%', ifnull(#{roleName}, ''), '%', ifnull(#{description}, ''), '%')
+    </select>
+
+    <!--新增-->
+    <insert id="insert" keyProperty="roleId" useGeneratedKeys="true">
+        insert into sys_role(role_name, description, enable)
+        values (#{roleName}, #{description}, #{enable})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update sys_role
+        set role_name   = #{roleName},
+            description = #{description},
+            enable      = #{enable}
+        where role_id = #{roleId}
+    </update>
+
+    <!-- 修改用户启用 -->
+    <update id="updateEnable">
+        update sys_role
+        set enable = #{enable}
+        where role_id = #{roleId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from sys_role
+        where role_id = #{roleId}
+    </delete>
+
+    <insert id="addPower">
+        insert into sys_role_power (role_id, power_id)
+        values (#{roleId}, #{powerId})
+    </insert>
+
+    <delete id="deletePower">
+        delete
+        from sys_role_power
+        where role_id = #{roleId}
+          and power_id = #{powerId}
+    </delete>
+
+</mapper>
+

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>修改页面</title>
+    <link rel="stylesheet" href="../component/pear/css/pear.css"/>
+</head>
+<body>
+<form class="layui-form" action="">
+    <div class="mainBox">
+        <div class="main-container">
+<!--            <input type="hidden" id="id" name="id" th:value="${myUser.id}">-->
+<!--            <input type="hidden" id="avatar" name="avatar" th:value="${myUser.avatar}">-->
+<!--            <input type="hidden" id="backImg" name="backImg" th:value="${myUser.backImg}">-->
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">id</label>
+                <div class="layui-input-block">
+                    <input type="text" name="id" lay-verify="id" autocomplete="off" placeholder="请输入id值"
+                    class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">密码</label>
+                <div class="layui-input-block">
+                    <input type="text" name="password" lay-verify="title" autocomplete="off" placeholder="请输入密码"
+                           class="layui-input">
+                </div>
+            </div>
+
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">邮箱</label>
+                <div class="layui-input-block">
+                    <input type="text" name="email" lay-verify="email" autocomplete="off" placeholder="请输入邮箱"
+                           class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">个性签名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="signature" lay-verify="title" autocomplete="off" placeholder="请输入个性签名"
+                           class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">角色</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="roleId" value=4 title="普通用户" checked>
+                    <input type="radio" name="roleId" value=3 title="氪金玩家">
+                    <input type="radio" name="roleId" value=2 title="系统维护员">
+                    <input type="radio" name="roleId" value=1 title="超级管理员">
+                </div>
+            </div>
+
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户状态</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="status" value="normal" title="状态正常" checked>
+                    <input type="radio" name="status" value="abnormal" title="状态不正常">
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="button-container">
+            <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" lay-submit=""
+                    lay-filter="user-save">
+                <i class="layui-icon layui-icon-ok"></i>
+                提交
+            </button>
+            <button type="reset" class="pear-btn pear-btn-sm">
+                <i class="layui-icon layui-icon-refresh"></i>
+                重置
+            </button>
+        </div>
+    </div>
+</form>
+<script src="../../../component/layui/layui.js"></script>
+<script src="../../../component/pear/pear.js"></script>
+<script>
+    layui.use(['form', 'jquery'], function () {
+        let form = layui.form;
+        let $ = layui.jquery;
+
+        form.on('submit(user-save)', function (data) {
+
+            let my_data = data.field;
+            let roleSet = [];
+            let role = {};
+            let roleId = data.field.roleId
+            let id = data.field.id
+            console.log(id)
+            role['roleId'] = roleId;
+            roleSet[0] = role;
+            delete my_data['roleId'];
+
+            my_data['roleSet'] = roleSet;
+            console.log(JSON.stringify(my_data))
+            $.ajax({
+                url: '/api/user/editUser',
+                data: JSON.stringify(my_data),
+                dataType: 'json',
+                contentType: 'application/json',
+                type: 'put',
+                success: function (result) {
+                    if (result.code === 0) {
+                        layer.msg(result.message, {
+                            icon: 1,
+                            time: 1000
+                        }, function () {
+                            parent.layer.close(parent.layer.getFrameIndex(window
+                                .name)); //关闭当前页
+                            parent.layui.table.reload("user-table");
+                        });
+                    } else {
+                        layer.msg(result.message, {
+                            icon: 2,
+                            time: 1000
+                        });
+                    }
+                }
+            })
+            return false;
+        });
+    })
+</script>
+<script>
+</script>
+</body>
+</html>

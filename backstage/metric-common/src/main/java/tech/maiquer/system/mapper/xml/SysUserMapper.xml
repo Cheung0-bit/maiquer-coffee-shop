@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.maiquer.system.mapper.SysUserMapper">
+
+    <resultMap type="SysUser" id="SysUserMap">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="username" column="user_name" jdbcType="VARCHAR"/>
+        <result property="nickname" column="nick_name" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="openid" column="openid" jdbcType="VARCHAR"/>
+        <result property="unionid" column="unionid" jdbcType="VARCHAR"/>
+        <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
+        <result property="backImg" column="back_img" jdbcType="VARCHAR"/>
+        <result property="signature" column="signature" jdbcType="VARCHAR"/>
+        <result property="enable" column="enable" jdbcType="TINYINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <!-- 角色集合 -->
+        <collection property="roleSet" ofType="SysRole" fetchType="lazy">
+            <id property="roleId" column="role_id" jdbcType="INTEGER"/>
+            <result property="roleName" column="role_name" jdbcType="VARCHAR"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="enable" column="role_enable" jdbcType="BOOLEAN"/>
+        </collection>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="SysUserMap">
+        select su.*, sr.role_id, sr.role_name, sr.enable as role_enable, sr.description
+        from sys_user su
+                 left join sys_user_role sur on su.id = sur.user_id
+                 left join sys_role sr on sr.role_id = sur.role_id
+        where su.id = #{id}
+        limit 1
+    </select>
+
+    <!-- 用户名查询单个 -->
+    <select id="queryByNameSysUser" resultMap="SysUserMap">
+        select su.*, sr.role_id, sr.role_name, sr.enable as role_enable, sr.description
+        from sys_user su
+                 left join sys_user_role sur on su.id = sur.user_id
+                 left join sys_role sr on sr.role_id = sur.role_id
+        where su.user_name = #{userName}
+        limit 1
+    </select>
+
+    <!--查询全部用户-->
+    <select id="queryAll" resultMap="SysUserMap">
+        select *
+        from sys_user su
+                 left join sys_user_role sur on su.id = sur.user_id
+                 left join sys_role sr on sr.role_id = sur.role_id
+        where concat(ifnull(user_name, ''), ifnull(nick_name, ''), ifnull(phone, ''), ifnull(email, ''))
+                  like
+              concat('%', ifnull(#{userName}, ''), '%', ifnull(#{nickName}, ''), '%', ifnull(#{phone}, ''), '%',
+                     ifnull(#{email}, ''), '%')
+    </select>
+
+    <!-- openid 查询 -->
+    <select id="queryByOpenid" resultMap="SysUserMap">
+        select *
+        from sys_user su
+                 left join sys_user_role sur on su.id = sur.user_id
+                 left join sys_role sr on sr.role_id = sur.role_id
+        where openid = #{openId}
+        limit 1
+    </select>
+
+    <!-- 手机号 查询 -->
+    <select id="queryByPhoneSysUser" resultMap="SysUserMap">
+        select *
+        from sys_user su
+                 left join sys_user_role sur on su.id = sur.user_id
+                 left join sys_role sr on sr.role_id = sur.role_id
+        where phone = #{phone}
+        limit 1
+    </select>
+
+    <!--新增对象-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into sys_user (user_name, nick_name, password, status, phone, email, openid, unionid, avatar, back_img,
+                              signature, enable)
+        values (#{username}, #{nickname}, #{password}, #{status}, #{phone}, #{email}, #{openid}, #{unionid}, #{avatar},
+                #{backImg}, #{signature}, #{enable});
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update sys_user
+        set user_name = #{username},
+            password  = #{password},
+            nick_name = #{nickname},
+            status    = #{status},
+            phone     = #{phone},
+            email     = #{email},
+            signature = #{signature},
+            openid    = #{openid},
+            unionid   = #{unionid},
+            avatar    = #{avatar},
+            back_img  = #{backImg},
+            enable    = #{enable}
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from sys_user
+        where id = #{id}
+    </delete>
+
+    <insert id="addRole">
+        insert into sys_user_role(user_id, role_id)
+        values (#{userId}, #{roleId})
+    </insert>
+
+    <delete id="deleteRole">
+        delete
+        from sys_user_role
+        where user_id = #{userId}
+    </delete>
+
+    <delete id="deleteByIds">
+        delete
+        from `sys_user`
+        where id in
+        <foreach collection="userIds" item="it" open="(" separator="," close=")">
+            #{it}
+        </foreach>
+    </delete>
+
+    <!--批量查询-->
+    <select id="queryByIds" resultMap="SysUserMap">
+        select *
+        from sys_user su
+        left join sys_user_role sur on su.id = sur.user_id
+        left join sys_role sr on sr.role_id = sur.role_id
+        where id in
+        <foreach collection="userIds" item="it" open="(" separator="," close=")">
+            #{it}
+        </foreach>
+    </select>
+
+    <update id="updateNickName">
+        update sys_user
+        set nick_name = #{nickname}
+        where id = #{userId}
+    </update>
+
+    <update id="updatePassword">
+        update sys_user
+        set password = #{password}
+        where id = #{userId}
+    </update>
+
+    <update id="updateStatus">
+        update sys_user
+        set status = #{status}
+        where id = #{userId}
+    </update>
+
+    <update id="updateAvatar">
+        update sys_user
+        set avatar = #{avatar}
+        where id = #{userId}
+    </update>
+
+    <update id="updateBackImg">
+        update sys_user
+        set back_img = #{backImg}
+        where id = #{userId}
+    </update>
+
+    <update id="updateSignature">
+        update sys_user
+        set signature = #{signature}
+        where id = #{userId}
+    </update>
+
+    <update id="updateEnable">
+        update sys_user
+        set enable = #{enable}
+        where id = #{userId}
+    </update>
+
+</mapper>
+

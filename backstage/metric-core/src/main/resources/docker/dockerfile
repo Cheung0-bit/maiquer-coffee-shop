@@ -1,0 +1,5 @@
+FROM java:8
+VOLUME /tmp
+ADD metric-core-2.0.0.jar metric-core-2.0.0.jar
+EXPOSE 443 8888
+ENTRYPOINT ["java" ,"-Djava.security.egd=file:/dev/./urandom" ,"-Djava.rmi.server.hostname=124.222.85.137","-Dcom.sun.management.jmxremote","-Dcom.sun.management.jmxremote.port=8888","-Dcom.sun.management.jmxremote.rmi.port=8888","-Dcom.sun.management.jmxremote.authenticate=false","-Dcom.sun.management.jmxremote.ssl=false","-jar","/metric-core-2.0.0.jar"]

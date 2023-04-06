@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- 核 心 依 赖 -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.6.2</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <!-- 基 本 信 息 -->
+    <groupId>tech.maiquer</groupId>
+    <artifactId>metric-server</artifactId>
+    <version>${revision}</version>
+    <packaging>pom</packaging>
+
+    <!-- 项 目 描 述 -->
+    <name>后台服务中心</name>
+    <description>麦趣后台中心</description>
+
+    <!-- 版 本 管 理 -->
+    <properties>
+        <!-- 全 局 版 本 -->
+        <revision>2.0.0</revision>
+        <!-- JDK 版 本 -->
+        <java.version>1.8</java.version>
+    </properties>
+
+    <!-- 依 赖 管 理 -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- 公 用 模 块 -->
+            <dependency>
+                <groupId>tech.maiquer</groupId>
+                <artifactId>metric-server</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <!-- 公 共 服 务 模 块 -->
+            <dependency>
+                <groupId>tech.maiquer</groupId>
+                <artifactId>metric-common</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <!-- 对 象 储 存 模 块 -->
+            <dependency>
+                <groupId>tech.maiquer</groupId>
+                <artifactId>metric-oss</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <!-- 微 信 服 务 模 块 -->
+            <dependency>
+                <groupId>tech.maiquer</groupId>
+                <artifactId>metric-wechat</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <!-- 日 志 服 务 模 块 -->
+            <dependency>
+                <groupId>tech.maiquer</groupId>
+                <artifactId>metric-log</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <!-- 核 心 业 务 模 块 -->
+            <dependency>
+                <groupId>tech.maiquer</groupId>
+                <artifactId>metric-core</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <!-- 短 信 服 务 模 块 -->
+            <dependency>
+                <groupId>tech.maiquer</groupId>
+                <artifactId>metric-sms</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <!-- 数 据 库 连 接 工 具 -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>8.0.19</version>
+            </dependency>
+            <!-- Swagger-ui 文 档 -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-boot-starter</artifactId>
+                <version>3.0.0</version>
+            </dependency>
+            <!-- knife4j Swagger -->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <version>3.0.3</version>
+            </dependency>
+            <!-- JSON 解 析 工 具 -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>1.2.79</version>
+            </dependency>
+            <!-- 分 页 组 件 -->
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper-spring-boot-starter</artifactId>
+                <version>1.4.1</version>
+            </dependency>
+            <!-- Mybatis 依 赖 -->
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>2.2.1</version>
+            </dependency>
+            <!-- Mybatis-plus 依 赖 -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>3.5.1</version>
+            </dependency>
+            <!-- mirai-bot -->
+            <dependency>
+                <groupId>net.mamoe</groupId>
+                <artifactId>mirai-core-jvm</artifactId>
+                <version>2.6.4</version>
+            </dependency>
+            <!-- httpclient -->
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+            </dependency>
+            <!-- commons-io -->
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.11.0</version>
+            </dependency>
+            <!-- aop 依 赖 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-aop</artifactId>
+                <version>2.6.2</version>
+            </dependency>
+            <!--redis-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-redis</artifactId>
+                <version>2.6.1</version>
+            </dependency>
+            <!-- test -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>2.6.6</version>
+                <scope>test</scope>
+            </dependency>
+            <!-- Spring Security -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-security</artifactId>
+                <version>2.6.3</version>
+            </dependency>
+            <!-- jwt 工 具 -->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>0.9.1</version>
+            </dependency>
+            <!-- junit 单 元 测 试 -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.13.2</version>
+                <scope>test</scope>
+            </dependency>
+            <!-- 配 置 映 射 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-configuration-processor</artifactId>
+                <version>2.6.1</version>
+                <optional>true</optional>
+            </dependency>
+            <!-- SpringSession 自定义Cookies属性（去掉烦人的SameSite） -->
+            <dependency>
+                <groupId>org.springframework.session</groupId>
+                <artifactId>spring-session-core</artifactId>
+                <version>2.6.1</version>
+            </dependency>
+            <!-- Thymeleaf Security 工 具 -->
+            <dependency>
+                <groupId>org.thymeleaf.extras</groupId>
+                <artifactId>thymeleaf-extras-springsecurity5</artifactId>
+                <version>3.0.4.RELEASE</version>
+            </dependency>
+            <!-- Thymeleaf 模 板 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-thymeleaf</artifactId>
+                <version>2.6.3</version>
+            </dependency>
+            <!-- 微 信 支 付 SDK -->
+            <dependency>
+                <groupId>com.github.wechatpay-apiv3</groupId>
+                <artifactId>wechatpay-apache-httpclient</artifactId>
+                <version>0.4.2</version>
+            </dependency>
+            <!-- 又 拍 云 SDK -->
+            <dependency>
+                <groupId>com.upyun</groupId>
+                <artifactId>java-sdk</artifactId>
+                <version>4.2.3</version>
+            </dependency>
+            <!-- 阿 里 云 SDK -->
+            <dependency>
+                <groupId>com.aliyun</groupId>
+                <artifactId>dysmsapi20170525</artifactId>
+                <version>2.0.9</version>
+            </dependency>
+            <!-- 验 证 码 -->
+            <dependency>
+                <groupId>com.github.whvcse</groupId>
+                <artifactId>easy-captcha</artifactId>
+                <version>1.6.2</version>
+            </dependency>
+            <!-- MongoDB -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-mongodb</artifactId>
+                <version>2.6.2</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <!-- 继 承 依 赖 -->
+    <dependencies>
+        <!-- Lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.22</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <!-- 模 块 管 理 -->
+    <modules>
+        <module>metric-common</module>        <!-- 公 共 服 务 模 块 -->
+        <module>metric-core</module>       <!-- 核 心 业 务 模 块 -->
+        <module>metric-log</module>       <!-- 日 志 服 务 模 块 -->
+        <module>metric-oss</module>       <!-- 对 象 储 存 模 块 -->
+        <module>metric-sms</module>       <!-- 短 息 服 务 模 块 -->
+        <module>metric-wechat</module>    <!-- 微 信 服 务 模 块 -->
+    </modules>
+
+    <!-- 构 建 工 具 -->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.0.0</version>
+            </plugin>
+        </plugins>
+        <resources>
+            <!-- 加 载 .Java 下 的 XML 文 件 -->
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+            <!-- 加 载 .Java 下 的 XML 文 件 -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+
+    <!-- 远 程 仓 库 -->
+    <repositories>
+        <repository>
+            <id>alimaven</id>
+            <url>https://maven.aliyun.com/repository/public</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>alimaven</id>
+            <url>https://maven.aliyun.com/repository/public</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+</project>

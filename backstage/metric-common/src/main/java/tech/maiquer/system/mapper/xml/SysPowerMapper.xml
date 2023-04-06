@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="tech.maiquer.system.mapper.SysPowerMapper">
+
+    <resultMap type="SysPower" id="SysPowerMap">
+        <id column="power_id" property="powerId"/>
+        <result column="power_name" property="powerName"/>
+        <result column="power_code" property="powerCode"/>
+        <result column="power_url" property="powerUrl"/>
+        <result column="enable" property="enable"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <insert id="insert" keyProperty="powerId" useGeneratedKeys="true">
+        insert into sys_power (power_name, power_code, power_url, enable)
+        values (#{powerName}, #{powerCode}, #{powerUrl}, #{enable})
+    </insert>
+
+    <!-- 根据 Id 查询权限-->
+    <select id="queryById" resultMap="SysPowerMap">
+        select power_id, power_name, power_code, power_url, enable, create_time, update_time
+        from sys_power
+        where power_id = #{powerId}
+        limit 1
+    </select>
+
+    <select id="queryByUserId" resultMap="SysPowerMap">
+        SELECT sp.power_id, sp.power_name, sp.power_code, sp.power_url, sp.enable
+        FROM sys_power sp
+                 LEFT JOIN sys_role_power srp ON sp.power_id = srp.power_id
+                 LEFT JOIN sys_role sr ON sr.role_id = srp.role_id
+                 LEFT JOIN sys_user_role sur ON sur.role_id = sr.role_id
+                 LEFT JOIN sys_user su ON su.id = sur.user_id
+        WHERE su.id = #{userId}
+          and sp.enable = 1
+          and sr.enable = 1
+    </select>
+
+    <select id="queryByUsername" resultMap="SysPowerMap">
+        SELECT sp.power_id, sp.power_name, sp.power_code, sp.power_url, sp.enable
+        FROM sys_power sp
+                 LEFT JOIN sys_role_power srp ON sp.power_id = srp.power_id
+                 LEFT JOIN sys_role sr ON sr.role_id = srp.role_id
+                 LEFT JOIN sys_user_role sur ON sur.role_id = sr.role_id
+                 LEFT JOIN sys_user su ON su.id = sur.user_id
+        WHERE su.user_name = #{username}
+          and sp.enable = 1
+          and sr.enable = 1
+    </select>
+
+    <select id="queryAll" resultMap="SysPowerMap">
+        select *
+        from sys_power
+        where concat(ifnull(power_name, ''), ifnull(power_code, ''), '', ifnull(power_url, ''))
+                  like
+              concat('%', ifnull(#{powerName}, ''), '%', ifnull(#{powerCode}, ''), '%', ifnull(#{powerUrl}, ''), '%')
+    </select>
+
+    <select id="queryByRole" resultType="integer">
+        select power_id
+        from sys_role_power
+        where role_id = #{roleId}
+    </select>
+
+    <!-- 根据 Id 修改权限数据 -->
+    <update id="updateById" parameterType="SysPower">
+        update sys_power
+        set power_name = #{powerName},
+            power_code = #{powerCode},
+            power_url  = #{powerUrl},
+            enable     = #{enable}
+        where power_id = #{powerId}
+    </update>
+
+    <update id="setPower">
+        insert into sys_role_power(role_id, power_id)
+        values
+        <foreach collection="powerIds" item="powerId" separator=",">
+            (#{roleId},#{powerId})
+        </foreach>
+    </update>
+
+    <update id="updateEnable">
+        update sys_power
+        set enable = #{enable}
+        where power_id = #{powerId}
+    </update>
+
+    <!-- 根据 Id 删除用户数据 -->
+    <delete id="deleteById">
+        delete
+        from sys_power
+        where power_id = #{powerId}
+    </delete>
+
+    <delete id="deleteByRoleId">
+        delete
+        from sys_role_power
+        where role_id = #{roleId}
+    </delete>
+
+</mapper>

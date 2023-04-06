@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.maiquer.system.mapper.ProductMapper">
+
+    <resultMap type="Product" id="ProductMap">
+        <result property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="price" column="price"/>
+        <result property="evaId" column="eva_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into t_product(title, price, eva_id)
+        values (#{title}, #{price}, #{evaId})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update t_product
+        <set>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="evaId != null">
+                eva_id = #{evaId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from t_product
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteByEvaIdInt">
+        delete
+        from t_product
+        where eva_id = #{evaId}
+    </delete>
+
+    <select id="queryById" resultMap="ProductMap">
+        select *
+        from t_product
+        where id = #{id}
+        limit 1
+    </select>
+
+    <select id="queryByEvaId" resultMap="ProductMap">
+        select *
+        from t_product
+        where eva_id = #{evaId}
+        limit 1
+    </select>
+
+    <select id="queryAll" resultMap="ProductMap">
+        select *
+        from t_product
+    </select>
+
+    <select id="queryAll1" resultMap="ProductMap" resultType="tech.maiquer.common.model.LayuiQuery3">
+        select *
+        from t_product
+    </select>
+
+    <select id="getProductList" parameterType="tech.maiquer.common.model.LayuiQuery3" resultMap="ProductMap">
+        select * from t_product
+        where title like #{title}
+        limit #{start},#{limit}
+    </select>
+
+    <select id="countProductList" parameterType="tech.maiquer.common.model.LayuiQuery3" resultType="Long">
+        select count(1) from t_product
+        where title like #{title}
+    </select>
+</mapper>

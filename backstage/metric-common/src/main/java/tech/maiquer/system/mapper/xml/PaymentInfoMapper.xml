@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.maiquer.system.mapper.PaymentInfoMapper">
+
+    <resultMap type="PaymentInfo" id="PaymentInfoMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="orderNo" column="order_no" jdbcType="VARCHAR"/>
+        <result property="transactionId" column="transaction_id" jdbcType="VARCHAR"/>
+        <result property="paymentType" column="payment_type" jdbcType="VARCHAR"/>
+        <result property="tradeType" column="trade_type" jdbcType="VARCHAR"/>
+        <result property="tradeState" column="trade_state" jdbcType="VARCHAR"/>
+        <result property="payerTotal" column="payer_total" jdbcType="INTEGER"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="PaymentInfoMap">
+        select *
+        from t_payment_info
+        where id = #{id}
+        limit 1
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into t_payment_info(order_no, transaction_id, payment_type, trade_type, trade_state, payer_total,
+                                   content)
+        values (#{orderNo}, #{transactionId}, #{paymentType}, #{tradeType}, #{tradeState}, #{payerTotal}, #{content})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update t_payment_info
+        <set>
+            <if test="orderNo != null and orderNo != ''">
+                order_no = #{orderNo},
+            </if>
+            <if test="transactionId != null and transactionId != ''">
+                transaction_id = #{transactionId},
+            </if>
+            <if test="paymentType != null and paymentType != ''">
+                payment_type = #{paymentType},
+            </if>
+            <if test="tradeType != null and tradeType != ''">
+                trade_type = #{tradeType},
+            </if>
+            <if test="tradeState != null and tradeState != ''">
+                trade_state = #{tradeState},
+            </if>
+            <if test="payerTotal != null">
+                payer_total = #{payerTotal},
+            </if>
+            <if test="content != null and content != ''">
+                content = #{content},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from t_payment_info
+        where id = #{id}
+    </delete>
+
+    <select id="queryAll" resultMap="PaymentInfoMap">
+        select *
+        from t_payment_info
+    </select>
+
+    <select id="queryAll1" resultMap="PaymentInfoMap" resultType="tech.maiquer.common.model.LayuiQuery4">
+        select * from t_payment_info
+    </select>
+
+    <select id="getPaymentInfoList" parameterType="tech.maiquer.common.model.LayuiQuery4" resultMap="PaymentInfoMap">
+        select * from t_payment_info
+        where order_no like #{orderNo}
+        limit #{start},#{limit}
+    </select>
+
+    <select id="countPaymentList" parameterType="tech.maiquer.common.model.LayuiQuery4" resultType="Long">
+        select count(1) from t_payment_info
+        where order_no like #{orderNo}
+    </select>
+
+</mapper>
+

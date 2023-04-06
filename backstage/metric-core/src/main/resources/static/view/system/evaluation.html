@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>测评管理</title>
+    <link rel="stylesheet" href="../../component/pear/css/pear.css"/>
+</head>
+<body class="pear-container">
+<div class="layui-card">
+    <div class="layui-card-body">
+        <form class="layui-form" action="">
+            <div class="layui-form-item">
+                <div class="layui-form-item layui-inline">
+                    <label class="layui-form-label">测评名称</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="realName" placeholder="" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-inline">
+                    <button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="eva-query">
+                        <i class="layui-icon layui-icon-search"></i>
+                        查询
+                    </button>
+                    <button type="reset" class="pear-btn pear-btn-md">
+                        <i class="layui-icon layui-icon-refresh"></i>
+                        重置
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="layui-card">
+    <div class="layui-card-body">
+        <table id="eva-table" lay-filter="eva-table"></table>
+    </div>
+</div>
+
+<script type="text/html" id="eva-toolbar">
+    <button class="pear-btn pear-btn-primary pear-btn-md" lay-event="add">
+        <i class="layui-icon layui-icon-add-1"></i>
+        新增
+    </button>
+    <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove">
+        <i class="layui-icon layui-icon-delete"></i>
+        删除
+    </button>
+</script>
+
+
+<script type="text/html" id="eva-bar">
+    <button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>
+    </button>
+    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i>
+    </button>
+</script>
+
+
+<script src="../../component/layui/layui.js"></script>
+<script src="../../component/pear/pear.js"></script>
+<script>
+    layui.use(['table', 'form', 'jquery', 'common'], function () {
+        let table = layui.table;
+        let form = layui.form;
+        let $ = layui.jquery;
+        let common = layui.common;
+
+        let MODULE_PATH = "operate/";
+
+        let cols = [
+            [{
+                type: 'checkbox'
+            },
+                {
+                    title: '测评id',
+                    field: 'id',
+                    align: 'center',
+                },
+                {
+                    title: '测评名称',
+                    field: 'name',
+                    align: 'center',
+                    width: 130,
+                },
+                {
+                    title: '目标地址',
+                    field: 'realUrl',
+                    align: 'center',
+                },
+                {
+                    title: '封面图',
+                    field: 'coverPic',
+                    align: 'center',
+                    templet: d => {
+                        let url = d.coverPic;
+                        return '<a href="' + url + '" target="_blank " title="点击查看">' +
+                            '<img src="' + url + '" style="height:20px;" />' +
+                            '</a>';
+                    }
+                },
+                {
+                    title: '背景图',
+                    field: 'bgPic',
+                    align: 'center',
+                    templet: d => {
+                        let url = d.bgPic;
+                        return '<a href="' + url + '" target="_blank " title="点击查看">' +
+                            '<img src="' + url + '" style="height:20px;" />' +
+                            '</a>';
+                    }
+                },
+                {
+                    title: '价格',
+                    field: 'price',
+                    align: 'center',
+                },
+                {
+                    title: '点击量',
+                    field: 'clickCount',
+                    align: 'center',
+                },
+                {
+                    title: '购买量',
+                    field: 'buyCount',
+                    align: 'center',
+                },
+                {
+                    title: '收藏量',
+                    field: 'likeCount',
+                    align: 'center',
+                },
+                {
+                    title: '创建时间',
+                    field: 'createTime',
+                    align: 'center',
+                },
+                {
+                    title: '更新时间',
+                    field: 'updateTime',
+                    align: 'center',
+                },
+                {
+                    title: '操作',
+                    toolbar: '#eva-bar',
+                    align: 'center',
+                    width: 130
+                }
+            ]
+        ]
+
+        table.render({
+            elem: '#eva-table',
+            url: '/api/evaluation/layui/list',
+            page: true,
+            cols: cols,
+            skin: 'line',
+            toolbar: '#eva-toolbar',
+            defaultToolbar: [{
+                title: '刷新',
+                layEvent: 'refresh',
+                icon: 'layui-icon-refresh',
+            }, 'filter', 'print', 'exports']
+        });
+
+        table.on('tool(eva-table)', function (obj) {
+            if (obj.event === 'remove') {
+                window.remove(obj);
+            } else if (obj.event === 'edit') {
+                window.edit(obj);
+            }
+        });
+
+        table.on('toolbar(eva-table)', function (obj) {
+            if (obj.event === 'add') {
+                window.add();
+            } else if (obj.event === 'refresh') {
+                window.refresh();
+            } else if (obj.event === 'batchRemove') {
+                window.batchRemove(obj);
+            }
+        });
+
+        form.on('submit(eva-query)', function (data) {
+            table.reload('eva-table', {
+                page: true,
+                where: {
+                    name: data.field.realName
+                }
+            })
+            return false;
+        });
+
+        form.on('switch(eva-enable)', function (obj) {
+            layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);
+        });
+
+        window.add = function () {
+            layer.open({
+                type: 2,
+                title: '新增',
+                shade: 0.1,
+                area: [common.isModile() ? '100%' : '500px', common.isModile() ? '100%' : '400px'],
+                content: MODULE_PATH + 'eva-add.html'
+            });
+        }
+
+        window.edit = function (obj) {
+            console.log(obj);
+            layer.open({
+                type: 2,
+                title: '修改',
+                shade: 0.1,
+                area: ['500px', '400px'],
+                // content: "/evaluation/edit" + "?id=" + obj.data.id
+                content: "../../../../evaluation/edit.html"
+            });
+        }
+
+        window.remove = function (obj) {
+            layer.confirm('确定要删除该测评', {
+                icon: 3,
+                title: '提示'
+            }, function (index) {
+                layer.close(index);
+                let loading = layer.load();
+                $.ajax({
+                    url: "/api/evaluation/deleteEva/" + obj.data['id'],
+                    dataType: 'json',
+                    type: 'delete',
+                    success: function (result) {
+                        layer.close(loading);
+                        if (result.code === 0) {
+                            layer.msg(result.message, {
+                                icon: 1,
+                                time: 1000
+                            }, function () {
+                                obj.del();
+                            });
+                        } else {
+                            layer.msg(result.message, {
+                                icon: 2,
+                                time: 1000
+                            });
+                        }
+                    },
+                    error: function (result) {
+                        alert(result)
+                    }
+                })
+            });
+        }
+
+        window.batchRemove = function (obj) {
+
+            let checkIds = common.checkField(obj, 'id');
+            console.log(checkIds)
+            if (checkIds === "") {
+                layer.msg("未选中数据", {
+                    icon: 3,
+                    time: 1000
+                });
+                return false;
+            }
+
+            layer.confirm('确定要删除这些用户', {
+                icon: 3,
+                title: '提示'
+            }, function (index) {
+                layer.close(index);
+                let loading = layer.load();
+                $.ajax({
+                    url: "/api/evaluation/batchRemove",
+                    data: {
+                      "evaIds": checkIds
+                    },
+                    dataType: 'json',
+                    type: 'delete',
+                    success: function (result) {
+                        layer.close(loading);
+                        // if (result.success) {
+                        if(result.code === 0){
+                            layer.msg(result.message, {
+                                icon: 1,
+                                time: 1000
+                            }, function () {
+                                table.reload('eva-table');
+                            });
+                        } else {
+                            layer.msg(result.message, {
+                                icon: 2,
+                                time: 1000
+                            });
+                        }
+                    }
+                })
+            });
+        }
+
+        window.refresh = function (param) {
+            table.reload('eva-table');
+        }
+    })
+</script>
+</body>
+</html>

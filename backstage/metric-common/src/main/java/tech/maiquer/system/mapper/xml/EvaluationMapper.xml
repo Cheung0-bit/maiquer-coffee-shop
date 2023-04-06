@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.maiquer.system.mapper.EvaluationMapper">
+
+    <resultMap type="Evaluation" id="EvaluationMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="type" column="type" jdbcType="INTEGER"/>
+        <result property="realUrl" column="real_url" jdbcType="VARCHAR"/>
+        <result property="coverPic" column="cover_pic" jdbcType="VARCHAR"/>
+        <result property="bgPic" column="bg_pic" jdbcType="VARCHAR"/>
+        <result property="price" column="price" jdbcType="DECIMAL"/>
+        <result property="clickCount" column="click_count" jdbcType="INTEGER"/>
+        <result property="buyCount" column="buy_count" jdbcType="INTEGER"/>
+        <result property="likeCount" column="like_count" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="EvaluationMap">
+        select *
+        from evaluation
+        where id = #{id}
+        limit 1
+    </select>
+
+    <!--批量查询-->
+    <select id="queryByIds" resultMap="EvaluationMap">
+        select *
+        from evaluation e
+         left join user_my_eva ume on e.id = ume.eva_id
+         left join sys_user su on ume.user_id = su.id
+        where e.id in
+        <foreach collection="evaIds" item="it" open="(" separator="," close=")">
+            #{it}
+        </foreach>
+    </select>
+
+    <select id="queryMyEvaByUserId" resultMap="EvaluationMap">
+        select distinct e.id,
+                        e.name,
+                        e.real_url,
+                        e.cover_pic,
+                        e.bg_pic,
+                        e.price,
+                        e.click_count,
+                        e.buy_count,
+                        e.like_count,
+                        e.type,
+                        e.create_time,
+                        e.update_time
+        from evaluation e
+                 left join user_my_eva ume on e.id = ume.eva_id
+                 left join sys_user su on ume.user_id = su.id
+        where su.id = #{id}
+    </select>
+
+    <select id="queryLikeEvaByUserId" resultMap="EvaluationMap">
+        select distinct e.id,
+                        e.name,
+                        e.real_url,
+                        e.cover_pic,
+                        e.bg_pic,
+                        e.price,
+                        e.click_count,
+                        e.buy_count,
+                        e.like_count,
+                        e.type,
+                        e.create_time,
+                        e.update_time
+        from evaluation e
+                 left join user_like_eva ule on e.id = ule.eva_id
+                 left join sys_user su on ule.user_id = su.id
+        where su.id = #{id}
+    </select>
+
+    <select id="queryGiftEvaByUserId" resultMap="EvaluationMap">
+        select distinct e.id,
+                        e.name,
+                        e.real_url,
+                        e.cover_pic,
+                        e.bg_pic,
+                        e.price,
+                        e.click_count,
+                        e.buy_count,
+                        e.like_count,
+                        e.type,
+                        e.create_time,
+                        e.update_time
+        from evaluation e
+                 left join user_gift_eva uge on e.id = uge.eva_id
+                 left join sys_user su on uge.user_id = su.id
+        where su.id = #{id}
+
+    </select>
+
+    <!--查询全部-->
+    <select id="queryAll" resultMap="EvaluationMap">
+        select *
+        from evaluation
+    </select>
+
+    <!--通过类型查询全部-->
+    <select id="queryAllByType" resultMap="EvaluationMap">
+        select *
+        from evaluation
+        where type = #{type}
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into evaluation(name, real_url, cover_pic, bg_pic, price, type, click_count, buy_count, like_count)
+        values (#{name}, #{realUrl}, #{coverPic}, #{bgPic}, #{price}, #{type}, 0, 0, 0)
+    </insert>
+
+    <!--新增MyEva-->
+    <insert id="addMyEva">
+        insert into user_my_eva (user_id, eva_id)
+        values (#{userId}, #{evaId})
+    </insert>
+
+    <!--删除MyEva-->
+    <delete id="deleteMyEva">
+        delete
+        from user_my_eva
+        where user_id = #{userId}
+          and eva_id = #{evaId}
+    </delete>
+
+    <!--新增LikeEva-->
+    <insert id="addLikeEva">
+        insert into user_like_eva(user_id, eva_id)
+        values (#{userId}, #{evaId})
+    </insert>
+
+    <!--删除MyEva-->
+    <delete id="deleteLikeEva">
+        delete
+        from user_like_eva
+        where user_id = #{userId}
+          and eva_id = #{evaId}
+    </delete>
+
+    <!--新增GiftEva-->
+    <insert id="addGiftEva">
+        insert into user_gift_eva(user_id, eva_id)
+        values (#{userId}, #{evaId})
+    </insert>
+
+    <!--删除GiftEva-->
+    <delete id="deleteGiftEva">
+        delete
+        from user_gift_eva
+        where user_id = #{userId}
+          and eva_id = #{evaId}
+    </delete>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update evaluation
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="realUrl != null and realUrl != ''">
+                real_url = #{realUrl},
+            </if>
+            <if test="coverPic != null and coverPic != ''">
+                cover_pic = #{coverPic},
+            </if>
+            <if test="bgPic != null and bgPic != ''">
+                bg_pic = #{bgPic},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="clickCount != null">
+                click_count = #{clickCount},
+            </if>
+            <if test="buyCount != null">
+                buy_count = #{buyCount},
+            </if>
+            <if test="likeCount != null">
+                like_count = #{likeCount},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from evaluation
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteByIds">
+        delete
+        from evaluation
+        where id in
+        <foreach collection="evaIds" item="it" open="(" separator="," close=")">
+            #{it}
+        </foreach>
+    </delete>
+
+    <select id="queryAll1" resultMap="EvaluationMap" parameterType="tech.maiquer.common.model.LayuiQuery2">
+        select *
+        from evaluation e
+                 left join user_gift_eva uge on e.id = uge.eva_id
+                 left join sys_user su on uge.user_id = su.id
+    </select>
+
+    <select id="getEvaluationList" parameterType="tech.maiquer.common.model.LayuiQuery2" resultMap="EvaluationMap">
+        select *
+        from evaluation
+        where name like #{name}
+        limit #{start},#{limit}
+    </select>
+
+    <select id="countEvaluationList" parameterType="tech.maiquer.common.model.LayuiQuery2" resultType="Long">
+        select count(1) from evaluation
+        where name like #{name}
+    </select>
+
+</mapper>
+
